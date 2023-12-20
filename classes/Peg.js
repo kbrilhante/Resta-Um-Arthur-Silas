@@ -1,10 +1,13 @@
 class Pegs {
     constructor() {
         this.group = new Group();
+        // this.group.debug = true;
         this.group.radius = scl * 0.8;
         this.group.color = "aquamarine";
         this.group.collider = "k";
-
+        this.group.addAni("norm", norm);
+        this.group.addAni("lit", lit);
+        this.aniScale = (2 * scl / norm.w) + 0.1;
         for (let j = 0; j < 7; j++) {
             for (let i = 0; i < 7; i++) {
                 if (((i >= 2 && i <= 4) || (j >= 2 && j <= 4)) && !(i == 3 && j == 3)) {
@@ -15,9 +18,14 @@ class Pegs {
                         c: i,
                         r: j
                     };
+                    this.setAni(p, "norm");
                 }
             }
         }
+    }
+    setAni(p, key) {
+        p.changeAni(key);
+        p.ani.scale = this.aniScale;
     }
     move(peg, hole) {
         const pegC = peg.coords.c;
@@ -94,11 +102,14 @@ class Pegs {
             const peg = this.group[i];
 
             if (peg.mouse.dragging()) {
-                peg.color = "red";
+                // peg.color = "red";
+                this.setAni(peg, "lit");
                 this.getValidMoves(peg);
             }
             if (peg.mouse.released()) {
-                peg.color = "aquamarine";
+                // peg.color = "aquamarine";
+                this.setAni(peg, "norm");
+
                 // console.log(peg.coords);
                 const hole = holes.getHole();
                 // console.log(hole.coords);
@@ -106,7 +117,10 @@ class Pegs {
                 if (hole && holes.isEmpty(hole.coords.c, hole.coords.r)) {
                     this.move(peg, hole);
                 }
-                holes.group.color = "black";
+                // holes.group.color = "black";
+                for (let i = 0; i < holes.group.length; i++) {
+                    holes.setAni(holes.group[i], "hole");
+                }
             }
 
         }
@@ -139,7 +153,8 @@ class Pegs {
             validHoles.push(lixo);
         }
         for (let i = 0; i < validHoles.length; i++) {
-            validHoles[i].color = "purple";
+            // validHoles[i].color = "purple";
+            holes.setAni(validHoles[i], "down");
         }
         return validHoles;
     }

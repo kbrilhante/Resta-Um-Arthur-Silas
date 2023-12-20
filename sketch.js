@@ -3,7 +3,14 @@ const tiles = 3 * 7 + 1;
 
 let holes, pegs;
 
-function preload() { }
+let norm, lit, down, hole;
+
+function preload() {
+    norm = loadImage("./assets/norm.png");
+    lit = loadImage("./assets/lit.png");
+    down = loadImage("./assets/down.png");
+    hole = loadImage("./assets/hole.png");
+}
 
 function setup() {
     new Canvas(scl * tiles, scl * tiles);
@@ -14,7 +21,7 @@ function setup() {
 }
 
 function draw() {
-    background("#fff");
+    background("#444");
     // drawGrid();
     pegs.checkDrag();
 }

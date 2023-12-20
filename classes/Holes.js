@@ -4,7 +4,9 @@ class Holes {
         this.group.radius = scl;
         this.group.color = 0;
         this.group.collider = "k";
-    
+        this.group.addAni("hole", hole);
+        this.group.addAni("down", down);
+        this.aniScale = (2 * scl / norm.w) + 0.14;
         for (let j = 0; j < 7; j++) {
             for (let i = 0; i < 7; i++) {
                 if ((i >= 2 && i <= 4) || (j >= 2 && j <= 4)){
@@ -15,9 +17,14 @@ class Holes {
                         c: i,
                         r: j
                     };
+                    this.setAni(h, "hole");
                 }
             }
         }
+    }
+    setAni(h, key) {
+        h.changeAni(key);
+        h.ani.scale = this.aniScale;
     }
     getHole() {
         for (let i = 0; i < this.group.length; i++) {
